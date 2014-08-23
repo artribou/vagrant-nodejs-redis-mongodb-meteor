@@ -78,8 +78,27 @@ class redis-cl {
   class { 'redis': }
 }
 
+
+class meteor {
+
+  exec { "get-meteor-script":
+    command => "curl https://install.meteor.com >>/home/vagrant/install-meteor.sh",
+    path => "/usr/bin:/usr/sbin:/bin:/usr/local/bin",
+    require => Package["curl"]
+  }
+
+  exec { "install-meteor":
+    command => "su - vagrant /home/vagrant/install-meteor.sh",
+    provider => "shell",
+    cwd => "/home/vagrant",
+    creates => "/home/vagrant/.meteor",
+    require => Exec["get-meteor-script"]
+  }
+}
+
 include apt_update
 include othertools
 include node-js
 include mongodb
 include redis-cl
+include meteor
