@@ -94,6 +94,13 @@ class meteor {
     creates => "/home/vagrant/.meteor",
     require => Exec["get-meteor-script"]
   }
+
+  file { "/home/vagrant/meteor":
+    ensure => "directory",
+    owner  => "vagrant",
+    group  => "vagrant",
+    mode   => 755
+  }
 }
 
 include apt_update
